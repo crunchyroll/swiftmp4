@@ -34,7 +34,7 @@ class SwiftMp4Middleware(object):
     def make_range_request(self, env, start, stop):
         # Makes a ranged request
         environ = env.copy()
-        environ['HTTP_RANGE'] = 'bytes=%s-%s' (start, stop)
+        environ['HTTP_RANGE'] = 'bytes=%s-%s' % (start, stop)
         def start_response(status, headers, *args):
             if not status.startswith('2'):
                 env['swift.range_error'] = True
