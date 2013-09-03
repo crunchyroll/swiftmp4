@@ -45,6 +45,9 @@ class StreamMp4(object):
             for atom in self.atoms.get_atoms():
                 if atom.copy and atom.type == type:
                     atom.pushToStream(file, self.data)
+                    if atom.type == "mdat":
+                        self.source_file.seek(atom.stream_offset, os.SEEK_SET)
+                        file.write(self.source_file.read(atom.stream_size))
         file.close()
     
     # getAtoms - Used primarily for debugging purposes
