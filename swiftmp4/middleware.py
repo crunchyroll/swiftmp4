@@ -53,7 +53,7 @@ class SwiftMp4Middleware(object):
         parts = urlparse.parse_qs(env.get('QUERY_STRING') or '')
         start = parts.get('start', [''])[0]
         # TODO: Check that the file requested is a MP4
-        if start and environ['REQUEST_METHOD'] == 'GET':
+        if start and env['REQUEST_METHOD'] == 'GET':
             # Get the MP4 metadata
             start_resp = self.make_start_request(env)
             start_file = StringIO(''.join(start_resp))
@@ -89,7 +89,7 @@ class SwiftMp4Middleware(object):
                             yield chunk
                         # Make a ranged request for the actual MP4 content data
                         start, stop = mp4stream._getByteRangeToRequest()
-                        range_resp = self.make_range_request(environ, start, stop)
+                        range_resp = self.make_range_request(env, start, stop)
                         for chunk in range_resp:
                             yield chunk
                     except Exception, e:
@@ -100,7 +100,7 @@ class SwiftMp4Middleware(object):
             else:
                 raise Exception('Invalid MP4 metadata')
         else:
-            return self.app(environ, start_response)
+            return self.app(env, start_response)
     
 
 
