@@ -637,7 +637,6 @@ class ctts(StreamFullAtom):
     def pushToStream(self, stream, data={}):
         if self.copy:
             # Simply copy over the initial entries in stts
-            print 'new offset', self.offset
             self.file.seek(self.offset, os.SEEK_SET)
             
             # First, copy in FullBox
@@ -1020,4 +1019,5 @@ class mdat(StreamAtom):
             stream.write(struct.pack(">I4sQ", 0, self.type, self.size))
         else:
             stream.write(struct.pack(">I4s", self.size, self.type))
+        
     

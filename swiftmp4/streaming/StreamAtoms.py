@@ -41,7 +41,6 @@ def parse_atom(mp4, start):
         is_64 = False
         size = read32(mp4)
         type = type_to_str(read32(mp4))
-        print 'PARSING ATOM OF ' + type
         if (size == 1):
             size = read64(mp4)
             is_64 = True
@@ -59,7 +58,6 @@ def parse_atom(mp4, start):
         return None
 
 def create_atom(mp4, offset, size, type, is_64, start):
-    print 'TYPE', type
     try:
         return eval("%s(mp4, offset, size, type, is_64, start)" % type)
     except NameError:
@@ -120,7 +118,6 @@ class StreamFullAtom(StreamAtom):
 class StreamAtomTree(StreamAtom):
     def __init__(self, file, offset, size, type, is_64, start):
         StreamAtom.__init__(self, file, offset, size, type, is_64, start)
-        print 'PARSE ATOM TREE'
         children = parse_atom_tree(file, offset+size, start)
         self._set_children(children)
         self.update_order = []
